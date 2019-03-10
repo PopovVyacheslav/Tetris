@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <time.h>
+#include <windows.h>
 using namespace sf;
 
 const int M = 20;
@@ -30,9 +31,9 @@ bool check()
    return 1;
 };
 
-
 int main()
 {
+    FreeConsole();
     srand(time(0));	 
 
 	RenderWindow window(VideoMode(320, 480), "The Game!");
@@ -48,6 +49,15 @@ int main()
 	float timer=0,delay=0.3; 
 
 	Clock clock;
+
+
+    colorNum = 1 + rand() % 7;
+    int n = rand() % 7;
+    for (int i = 0; i < 4; i++)
+    {
+        a[i].x = figures[n][i] % 2 + 4;
+        a[i].y = figures[n][i] / 2;
+    }
 
     while (window.isOpen())
     {
@@ -91,7 +101,7 @@ int main()
 	if (timer>delay)
 	  {
 	    for (int i=0;i<4;i++) { b[i]=a[i]; a[i].y+=1; }
-
+        
 		if (!check())
 		{
 		 for (int i=0;i<4;i++) field[b[i].y][b[i].x]=colorNum;
@@ -100,9 +110,10 @@ int main()
 		 int n=rand()%7;
 		 for (int i=0;i<4;i++)
 		   {
-		    a[i].x = figures[n][i] % 2;
+		    a[i].x = figures[n][i] % 2 + 4;
 		    a[i].y = figures[n][i] / 2;
 		   }
+
 		}
 
 	  	timer=0;
