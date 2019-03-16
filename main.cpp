@@ -31,10 +31,45 @@ bool check()
    return 1;
 };
 
+bool game_over()
+{
+    for (int i = 0; i < 4; i++)
+        if (field[a[i].y][a[i].x] != 0) return 1;
+    return 0;
+};
+
+void results(int score)
+{
+    RenderWindow Results(VideoMode(280, 110), "Results");
+
+    Font font;
+    font.loadFromFile("PLAYBILL.TTF");
+    Text text("Score:   " + std::to_string(score), font, 30);
+    text.setOutlineColor(Color::Black);
+    text.setFillColor(Color::Black);
+    text.setPosition(10, 20);
+    
+    while (Results.isOpen())
+    {
+        Event ev;
+        while (Results.pollEvent(ev))
+        {
+            if (ev.type == Event::Closed)
+                Results.close();
+        }
+        Results.clear(Color::White);
+        Results.draw(text);
+        Results.display();
+    };
+    
+};
+
 int main()
 {
     FreeConsole();
     srand(time(0));	 
+
+    int score = 0;
 
 	RenderWindow window(VideoMode(320, 480), "The Game!");
 
@@ -114,6 +149,12 @@ int main()
 		    a[i].y = figures[n][i] / 2;
 		   }
 
+         if (game_over())
+         {
+             results(score);
+             break;
+         }
+
 		}
 
 	  	timer=0;
@@ -130,6 +171,7 @@ int main()
 		    field[k][j]=field[i][j];
 		}
 		if (count<N) k--;
+        else score++;
 	}
 
     dx=0; rotate=0; delay=0.3;

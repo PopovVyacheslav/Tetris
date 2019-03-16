@@ -144,6 +144,9 @@
     <Image Include="images\frame.png" />
     <Image Include="images\tiles.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="PLAYBILL.TTF" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
