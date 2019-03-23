@@ -1,6 +1,10 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <SFML/Graphics.hpp>
 #include <time.h>
 #include <windows.h>
+#include <fstream>
+
 using namespace sf;
 
 const int M = 20;
@@ -44,7 +48,7 @@ void results(int score)
 
     Font font;
     font.loadFromFile("PLAYBILL.TTF");
-    Text text("Score:   " + std::to_string(score), font, 30);
+    Text text("Score:   " + std::to_string(score) + "\nFor saving your score press S", font, 30);
     text.setOutlineColor(Color::Black);
     text.setFillColor(Color::Black);
     text.setPosition(10, 20);
@@ -56,6 +60,21 @@ void results(int score)
         {
             if (ev.type == Event::Closed)
                 Results.close();
+
+            if (ev.type == Event::KeyPressed)
+                if (ev.key.code == Keyboard::S)
+                {
+                    std::time_t seconds = time(NULL);
+                    tm* timeinfo = localtime(&seconds);
+                    std::string scoretime = asctime(timeinfo);
+                    std::ofstream scorefile;
+                    scorefile.open("Score list.txt", std::ios_base::app);
+                    if (scorefile)
+                    {
+                        scorefile << "Score = " + std::to_string(score) + " at " + scoretime;
+                        scorefile.close();
+                    };
+                };
         }
         Results.clear(Color::White);
         Results.draw(text);
@@ -81,10 +100,16 @@ int main()
 	Sprite s(t1), background(t2), frame(t3);
 
     int dx=0; bool rotate=0; int colorNum=1;
-	float timer=0,delay=0.3; 
+	float timer=0,delay=3; 
 
 	Clock clock;
 
+    Font font;
+    font.loadFromFile("PLAYBILL.TTF");
+    Text text("", font, 25);
+    text.setOutlineColor(Color::Black);
+    text.setFillColor(Color::Color(0,105,62,255));
+    text.setPosition(35, 425);
 
     colorNum = 1 + rand() % 7;
     int n = rand() % 7;
@@ -174,6 +199,8 @@ int main()
         else score++;
 	}
 
+    text.setString("Score:  " + std::to_string(score));
+
     dx=0; rotate=0; delay=0.3;
 
     /////////draw//////////
@@ -199,6 +226,7 @@ int main()
 	  }
 
 	window.draw(frame);
+    window.draw(text);
  	window.display();
 	}
 
