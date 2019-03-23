@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <Font Include="PLAYBILL.TTF" />
+    <Font Include="unispace bd.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

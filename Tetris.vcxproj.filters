@@ -34,5 +34,8 @@
     <Font Include="PLAYBILL.TTF">
       <Filter>Файлы ресурсов</Filter>
     </Font>
+    <Font Include="unispace bd.ttf">
+      <Filter>Файлы ресурсов</Filter>
+    </Font>
   </ItemGroup>
 </Project>
