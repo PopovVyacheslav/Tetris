@@ -161,7 +161,7 @@ int main()
 		clock.restart();
 		timer+=time;
 
-        delay = 0.3 - (score / 2) * 0.1;
+        delay = 0.3 - (score / 5) * 0.01;
         
 
         Event e;
