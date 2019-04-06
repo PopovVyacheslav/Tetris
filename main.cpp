@@ -15,20 +15,6 @@ int field[M][N] = {0};
 struct Point
 {int x,y;} a[4], b[4];
 
-struct RecRec
-{
-    int score;
-    std::string timedate;
-};
-
-std::string substr(char* str, int start, int lenght)
-{
-    std::string temp = "";
-    for (int i = start; i < start + lenght || str[i] == '\n'; i++)
-        temp += str[i];
-    return temp;
-};
-
 int figures[7][4] =
 {
 	1,3,5,7, // I
@@ -56,69 +42,6 @@ bool game_over()
     return 0;
 };
 
-void records()
-{
-    RenderWindow record(VideoMode(200, 300), "RECORDS");
-    Font font;
-    font.loadFromFile("unispace bd.ttf");
-
-    while (record.isOpen())
-    {
-        Event e;
-
-        while (record.pollEvent(e))
-        {
-            if (e.type == Event::Closed)
-                record.close();
-
-            if (e.type == Event::KeyPressed)
-            {
-                if (e.key.code == Keyboard::Escape)
-                    record.close();
-            }
-
-            std::ifstream scorefile;
-            
-            char *temp = new char[1024];
-            int n = 0;
-            while (!scorefile.eof())
-            {
-                scorefile.getline(temp, 1024, '\n');
-                n++;
-            }
-            scorefile.close();
-
-            std::string *tableRec = new std::string[n];
-            //
-            //scorefile.open("Score list.txt", std::ios_base::in);
-            //for (int i = 0; i <= n; i++)
-            //{
-            //    scorefile.getline(temp, 1024, '\n');
-            //    int tscore = std::stoi(substr(temp,7,2));
-            //    tableRec[i].score = tscore;
-            //    tableRec[i].timedate = substr(temp, 14, 20);
-            //}
-
-            //if (n > 10)
-            //    n = 10;
-
-            //record.clear(Color::White);
-            //Text text("", font, 20);
-            //text.setOutlineColor(Color::Black);
-            //text.setFillColor(Color::Black);
-
-            //for (int i = 0; i < n; i++)
-            //{
-            //    text.setString(std::to_string(i) + ") " + std::to_string(tableRec[i].score) + "  " + tableRec[i].timedate);
-            //    record.draw(text);
-            //}
-
-            delete temp;
-            delete tableRec;
-        }
-    }
-};
-
 void results(int score)
 {
     RenderWindow Results(VideoMode(280, 110), "Results");
@@ -139,7 +62,6 @@ void results(int score)
                 Results.close();
 
             if (ev.type == Event::KeyPressed)
-            {
                 if (ev.key.code == Keyboard::S)
                 {
                     std::time_t seconds = time(NULL);
@@ -153,10 +75,6 @@ void results(int score)
                         scorefile.close();
                     };
                 };
-
-                if (ev.key.code == Keyboard::R)
-                    records();
-            };
         }
         Results.clear(Color::White);
         Results.draw(text);
@@ -182,7 +100,7 @@ int main()
 	Sprite s(t1), background(t2), frame(t3);
 
     int dx=0; bool rotate=0; int colorNum=1;
-	float timer=0,delay=0.3; 
+	float timer=0,delay=3; 
 
 	Clock clock;
 
@@ -203,7 +121,6 @@ int main()
 
     while (window.isOpen())
     {
-        delay = 0.3;
 		float time = clock.getElapsedTime().asSeconds();
 		clock.restart();
 		timer+=time;
@@ -213,9 +130,6 @@ int main()
         {
             if (e.type == Event::Closed)
                 window.close();
-
-            if (e.key.code == Keyboard::R)
-                records();
 
 			if (e.type == Event::KeyPressed)
 			  if (e.key.code==Keyboard::Up) rotate=true;
