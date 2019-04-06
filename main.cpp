@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <time.h>
 #include <windows.h>
 #include <fstream>
@@ -83,6 +84,36 @@ void results(int score)
     
 };
 
+void pause()
+{
+    RenderWindow Pause(VideoMode(210, 50), "Pause");
+
+    Font font;
+    font.loadFromFile("PLAYBILL.TTF");
+    Text text("Press Esc for continue.", font, 30);
+    text.setOutlineColor(Color::Black);
+    text.setFillColor(Color::Black);
+    text.setPosition(10, 8);
+
+    while (Pause.isOpen())
+    {
+        Event e;
+        while (Pause.pollEvent(e))
+        {
+            if (e.type == Event::Closed)
+                Pause.close();
+
+            if (e.type == Event::KeyPressed)
+                if (e.key.code == Keyboard::Escape)
+                    Pause.close();
+        }
+
+        Pause.clear(Color::White);
+        Pause.draw(text);
+        Pause.display();
+    }
+};
+
 int main()
 {
     FreeConsole();
@@ -100,7 +131,7 @@ int main()
 	Sprite s(t1), background(t2), frame(t3);
 
     int dx=0; bool rotate=0; int colorNum=1;
-	float timer=0,delay=3; 
+	float timer=0,delay=0.3; 
 
 	Clock clock;
 
@@ -111,8 +142,13 @@ int main()
     text.setFillColor(Color::Color(0,105,62,255));
     text.setPosition(35, 425);
 
-    colorNum = 1 + rand() % 7;
+    Music music;
+    music.openFromFile("tetris_theme.ogg");
+    music.setLoop(TRUE);
+    music.play();
+
     int n = rand() % 7;
+    colorNum = 1 + n;
     for (int i = 0; i < 4; i++)
     {
         a[i].x = figures[n][i] % 2 + 4;
@@ -125,16 +161,20 @@ int main()
 		clock.restart();
 		timer+=time;
 
+        delay = 0.3 - (score / 2) * 0.1;
+        
+
         Event e;
         while (window.pollEvent(e))
         {
             if (e.type == Event::Closed)
                 window.close();
 
-			if (e.type == Event::KeyPressed)
-			  if (e.key.code==Keyboard::Up) rotate=true;
-			  else if (e.key.code==Keyboard::Left) dx=-1;
-			  else if (e.key.code==Keyboard::Right) dx=1;
+            if (e.type == Event::KeyPressed)
+                if (e.key.code == Keyboard::Up) rotate = true;
+                else if (e.key.code == Keyboard::Left) dx = -1;
+                else if (e.key.code == Keyboard::Right) dx = 1;
+                else if (e.key.code == Keyboard::P) pause();
 		}
 
 	if (Keyboard::isKeyPressed(Keyboard::Down)) delay=0.05;
@@ -164,10 +204,10 @@ int main()
         
 		if (!check())
 		{
-		 for (int i=0;i<4;i++) field[b[i].y][b[i].x]=colorNum;
+            for (int i = 0; i < 4; i++) field[b[i].y][b[i].x] = colorNum;
 
-		 colorNum=1+rand()%7;
-		 int n=rand()%7;
+         int n = rand() % 7;
+         colorNum = 1 + n;
 		 for (int i=0;i<4;i++)
 		   {
 		    a[i].x = figures[n][i] % 2 + 4;

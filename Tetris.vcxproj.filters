@@ -38,4 +38,9 @@
       <Filter>Файлы ресурсов</Filter>
     </Font>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="tetris_theme.ogg">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+  </ItemGroup>
 </Project>
